@@ -1,6 +1,6 @@
 name:                yesod-auth-simple
 version:             0.1.0.0
-synopsis:            Simple project template from stack
+synopsis:            Very simple authentication for Yesod application.
 description:         Please see README.md
 homepage:            https://github.com/jabaraster/yesod-auth-simple
 license:             MIT
@@ -23,9 +23,6 @@ library
 
   exposed-modules: Yesod.Auth.Simple
 
-executable yesod-auth-simple
-  hs-source-dirs:      src
-  main-is:             Main.hs
-  default-language:    Haskell2010
-  build-depends:       base >= 4.7 && < 5
-
+source-repository head
+  type:     git
+  location: git@github.com:jabaraster/yesod-auth-simple.git
