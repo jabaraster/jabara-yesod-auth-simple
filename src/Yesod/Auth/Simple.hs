@@ -2,12 +2,9 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
-{-# LANGUAGE RankNTypes            #-}
-{-# LANGUAGE TemplateHaskell       #-}
-{-# LANGUAGE TypeFamilies          #-}
 module Yesod.Auth.Simple (
-  YesodAuthHardcoded(..)
-  , authHardcoded
+  YesodAuthSimple(..)
+  , authSimple
   , loginR
   )
   where
@@ -22,10 +19,13 @@ import           Yesod.Form
 
 import           Data.Text           (Text, pack)
 
-loginR :: AuthRoute
-loginR = PluginR "appauth" ["login"]
+authName :: Text
+authName = "authSimple"
 
-class (YesodAuth site) => YesodAuthHardcoded site where
+loginR :: AuthRoute
+loginR = PluginR authName ["login"]
+
+class (YesodAuth site) => YesodAuthSimple site where
 
   -- | Check whether given user name exists among hardcoded names.
   doesUserNameExist :: Text -> HandlerT site IO Bool
@@ -33,12 +33,12 @@ class (YesodAuth site) => YesodAuthHardcoded site where
   -- | Validate given user name with given password.
   validatePassword :: Text -> Text -> HandlerT site IO Bool
 
-authHardcoded :: YesodAuthHardcoded m => AuthPlugin m
-authHardcoded =
-  AuthPlugin "appauth" dispatch loginWidget
+authSimple :: YesodAuthSimple m => AuthPlugin m
+authSimple =
+  AuthPlugin authName dispatch loginWidget
   where
     dispatch "POST" ["login"] = postLoginR >>= sendResponse
-    dispatch m ps = $logDebug m >> $logDebug (pack $ show ps) >> notFound
+    dispatch m ps = notFound
     loginWidget toMaster = do
       token   <- getRequest >>= return . maybe "" id . reqToken
       [whamlet|
@@ -54,7 +54,7 @@ authHardcoded =
         <hr>
       |]
 
-postLoginR :: (YesodAuthHardcoded master)
+postLoginR :: (YesodAuthSimple master)
            => HandlerT Auth (HandlerT master IO) TypedContent
 postLoginR =
   do (username, password) <- lift (runInputPost
@@ -62,7 +62,7 @@ postLoginR =
             <*> ireq textField "password"))
      isValid <- lift (validatePassword username password)
      if isValid
-        then lift (setCredsRedirect (Creds "appauth" username []))
+        then lift (setCredsRedirect (Creds authName username []))
         else do isExists <- lift (doesUserNameExist username)
                 loginErrorMessageI LoginR
                                    (if isExists
