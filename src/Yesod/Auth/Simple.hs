@@ -4,7 +4,7 @@
 {-# LANGUAGE QuasiQuotes           #-}
 module Yesod.Auth.Simple (
   YesodAuthSimple(..)
-  , authSimple
+  , authSimplePlugin
   , loginR
   )
   where
@@ -20,7 +20,7 @@ import           Yesod.Form
 import           Data.Text           (Text, pack)
 
 authName :: Text
-authName = "authSimple"
+authName = "authSimplePlugin"
 
 loginR :: AuthRoute
 loginR = PluginR authName ["login"]
@@ -33,8 +33,8 @@ class (YesodAuth site) => YesodAuthSimple site where
   -- | Validate given user name with given password.
   validatePassword :: Text -> Text -> HandlerT site IO Bool
 
-authSimple :: YesodAuthSimple m => AuthPlugin m
-authSimple =
+authSimplePlugin :: YesodAuthSimple m => AuthPlugin m
+authSimplePlugin =
   AuthPlugin authName dispatch loginWidget
   where
     dispatch "POST" ["login"] = postLoginR >>= sendResponse
