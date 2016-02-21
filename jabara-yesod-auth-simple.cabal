@@ -1,13 +1,13 @@
-name:                yesod-auth-simple
+name:                jabara-yesod-auth-simple
 version:             0.1.0.0
 synopsis:            Very simple authentication for Yesod application.
 description:         Please see README.md
-homepage:            https://github.com/jabaraster/yesod-auth-simple
+homepage:            https://github.com/jabaraster/jabara-yesod-auth-simple
 license:             MIT
 license-file:        LICENSE
 author:              jabaraster
 maintainer:          ah@jabara.info
-copyright:           2016 jabaraster Here
+copyright:           2016 jabaraster
 category:            Web
 build-type:          Simple
 cabal-version:       >=1.10
@@ -21,8 +21,8 @@ library
                      , yesod-form                    >= 1.4.0      && < 1.5
                      , text                          >= 0.11       && < 2.0
 
-  exposed-modules: Yesod.Auth.Simple
+  exposed-modules: Jabara.Yesod.Auth.Simple
 
 source-repository head
   type:     git
-  location: git@github.com:jabaraster/yesod-auth-simple.git
+  location: git@github.com:jabaraster/jabara-yesod-auth-simple.git

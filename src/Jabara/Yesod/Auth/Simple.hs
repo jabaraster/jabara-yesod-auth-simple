@@ -2,7 +2,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
-module Yesod.Auth.Simple (
+module Jabara.Yesod.Auth.Simple (
   YesodAuthSimple(..)
   , authSimplePlugin
   , loginR
