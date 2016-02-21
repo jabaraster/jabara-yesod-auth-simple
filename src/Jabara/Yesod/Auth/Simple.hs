@@ -17,7 +17,7 @@ import qualified Yesod.Auth.Message  as Msg
 import           Yesod.Core
 import           Yesod.Form
 
-import           Data.Text           (Text, pack)
+import           Data.Text (Text)
 
 authName :: Text
 authName = "authSimplePlugin"
@@ -38,7 +38,7 @@ authSimplePlugin =
   AuthPlugin authName dispatch loginWidget
   where
     dispatch "POST" ["login"] = postLoginR >>= sendResponse
-    dispatch m ps = notFound
+    dispatch _ _ = notFound
     loginWidget toMaster = do
       token   <- getRequest >>= return . maybe "" id . reqToken
       [whamlet|
